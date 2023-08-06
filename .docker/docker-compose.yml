@@ -25,3 +25,5 @@ services:
             XDEBUG_MODE: ${XDEBUG_MODE}
         volumes:
             - '${PROJECT_FOLDER:-..}:/var/data/websites/${COMPOSE_PROJECT_NAME}:rw'
+        ports:
+            - 8000:8000

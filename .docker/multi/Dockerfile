@@ -85,4 +85,6 @@ RUN declare NPM_PACKAGE_ARRAY=(${=NPM_PACKAGES}) && \
 
 RUN echo "${BUILD_TARGET}-${BUILD_AGENT}@$(date -Iseconds)" > /etc/docker-build;
 
+EXPOSE 8000
+
 CMD ["php", "-a"]
