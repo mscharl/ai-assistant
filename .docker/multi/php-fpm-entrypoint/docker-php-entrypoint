@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+if [ -d "/usr/local/bin/docker-php-entrypoint.d/" ]; then
+    /bin/run-parts "/usr/local/bin/docker-php-entrypoint.d/"
+fi
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+    set -- php-fpm "$@"
+fi
+
+exec "$@"

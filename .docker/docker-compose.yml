@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+    cli:
+        image: '${IMAGE_PATH}/cli:${IMAGE_TAG}'
+        build:
+            context: .
+            dockerfile: './multi/Dockerfile'
+            target: 'cli'
+            args:
+                BUILD_AGENT: ${BUILD_AGENT:-local}
+                COMPOSE_PROJECT_NAME: ${COMPOSE_PROJECT_NAME}
+                DEVELOP_PACKAGES: ${DEVELOP_PACKAGES}
+                NODE_VERSION: ${NODE_VERSION}
+                NPM_PACKAGES: ${NPM_PACKAGES}
+                PHP_EXTENSIONS: ${PHP_EXTENSIONS}
+                PHP_VERSION: ${PHP_VERSION}
+                RUNTIME_PACKAGES: ${RUNTIME_PACKAGES}
+        restart: 'unless-stopped'
+        stdin_open: true
+        tty: true
+        hostname: '${COMPOSE_PROJECT_NAME}.cli.docker'
+        environment:
+            XDEBUG_HOST: 'host.docker.internal'
+            XDEBUG_MODE: ${XDEBUG_MODE}
+        volumes:
+            - '${PROJECT_FOLDER:-..}:/var/data/websites/${COMPOSE_PROJECT_NAME}:rw'
