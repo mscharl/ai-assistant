@@ -46,7 +46,7 @@ class OpenAIGreetingsService
         $request = [];
         $request[] = [
             'role' => 'system',
-            'content' => 'Du bekommst eine kurze Zusammenfassung des heutigen Tages. Ergänze den Text mit humorvollen Anmerkungen. Das Wetter und die Temperatur müssen erhalten bleiben. Formuliere den Text in der Gegenwart.'
+            'content' => 'Du bekommst eine kurze Zusammenfassung des heutigen Tages. Ergänze den Text mit humorvollen Anmerkungen. Das Wetter und die Temperatur müssen erhalten bleiben. Der Text soll nicht länger als fünf Sätze sein und in der Gegenwart formuliert werden.'
         ];
         $request[] = [
             'role' => 'user',
