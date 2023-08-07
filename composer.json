@@ -1,4 +1,6 @@
 {
+    "name": "mscharl/ai-assistant",
+    "description": "A small Symfony app to add OpenAI helpers for my Home Assistant installation.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
