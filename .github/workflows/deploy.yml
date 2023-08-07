@@ -18,14 +18,19 @@ jobs:
       - name: Create .env.local
         run: touch .env.local
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail
+
       - name: Add Production Env Variables
         run: 'echo "APP_ENV=prod" >> .env.local; echo "APP_DEBUG=false" >> .env.local; echo "APP_SECRET=${{ secrets.APP_SECRET }}" >> .env.local'
 
       - name: Add secret key
         run: 'echo "${{ secrets.PROD_SECRET_KEY }}" | base64 -d > config/secrets/prod/prod.decrypt.private.php'
-
-      - name: Cat key
-        run: cat config/secrets/prod/prod.decrypt.private.php
 
       - name: Cache Composer packages
         id: composer-cache
@@ -38,3 +43,12 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
+
+      - name: Deploy with rsync
+        run: rsync -avz --exclude={'.git','var/*','.docker','.github'} ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/mscharl/virtual/_Projects/ai-assistant
+
+      - name: Create folders
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/mscharl/virtual/_Projects/ai-assistant && mkdir -p var/log && mkdir -p var/cache"
+
+      - name: Clear cache
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/mscharl/virtual/_Projects/ai-assistant && bin/console cache:clear"
