@@ -18,7 +18,7 @@ class OpenAIGreetingsService
         $request = [];
         $request[] = [
             'role' => 'user',
-            'content' => sprintf('Schreibe eine kurze, maximal zwanzig wörter, humorvolle und familientaugliche Begrüßung passend zur Tageszeit "%s"', $timeOfDay->name())
+            'content' => sprintf('Schreibe eine kurze, maximal zwanzig wörter, humorvolle und familientaugliche Begrüßung passend zur Tageszeit %s', $timeOfDay->name())
         ];
 
         $responseLong = $this->openAIClientFactory->client()->chat()->create([
@@ -35,8 +35,8 @@ class OpenAIGreetingsService
         ]);
 
         return new Greeting(
-            short: $responseShort->choices[0]->message->content,
-            long: $responseLong->choices[0]->message->content,
+            short: trim($responseShort->choices[0]->message->content, "\" \t\n\r\0\x0B"),
+            long: trim($responseLong->choices[0]->message->content, "\" \t\n\r\0\x0B"),
             request: $request,
         );
     }
