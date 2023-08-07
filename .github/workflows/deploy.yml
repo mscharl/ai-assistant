@@ -15,6 +15,20 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
+      - name: Create .env.local
+        run: touch .env.local
+
+      - name: Make production envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_APP_ENV: prod
+          envkey_APP_DEBUG: false
+          envkey_APP_SECRET: ${{ secrets.APP_SECRET }}
+          file_name: .env.local
+
+      - name: Add secret key
+        run: echo "${{ secrets.PROD_SECRET_KEY }}" >> config/secrets/prod/prod.decrypt.private.php
+
       - name: Cache Composer packages
         id: composer-cache
         uses: actions/cache@v3
