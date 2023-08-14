@@ -11,7 +11,7 @@ enum TimeOfDayEnum: string
     case night = 'binary_sensor.tod_night';
     case noon = 'binary_sensor.tod_noon';
 
-    public function name(): string {
+    public function translated(): string {
         return match ($this) {
             self::earlyMorning => 'Früh am Morgen',
             self::morning => 'Vormittag',

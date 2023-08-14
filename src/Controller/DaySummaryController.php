@@ -61,7 +61,15 @@ class DaySummaryController extends BaseController
             ]
         ];
 
-        $hash = hash('sha3-512', sprintf('%s:%s', $day, $timeOfDay->value));
+        $hash = hash(
+            'sha3-512',
+            sprintf(
+                '%s:%s:%s',
+                $daySummary->greeting->short,
+                $daySummary->summary->content,
+                $timeOfDay->value,
+            ),
+        );
 
         return $this->json(['hash' => $hash, 'data' => $data]);
     }
